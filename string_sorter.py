@@ -78,11 +78,6 @@ class TempFile:
 
 
 def initial_sort(path_to_file: str) -> List[TempFile]:
-    try:
-        os.makedirs(TEMP_DIR)
-    except FileExistsError:
-        _ = [os.remove(os.path.join(TEMP_DIR, f)) for f in os.listdir(TEMP_DIR)]
-
     with open(path_to_file, 'r') as fin:
 
         temp_files = []
@@ -168,7 +163,10 @@ if __name__ == '__main__':
     if not os.path.exists(arguments.input_path):
         raise FileNotFoundError(f'The file you are trying to sort does not exist: {arguments.input_path}')
     else:
-        temporary_files = initial_sort(arguments.input_path)
+        os.makedirs(TEMP_DIR)
 
+        temporary_files = initial_sort(arguments.input_path)
         sorted_strings = external_sort(temporary_files, arguments.n_threads)
         sorted_strings.move(arguments.output_path)
+
+        os.rmdir(TEMP_DIR)
