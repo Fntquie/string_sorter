@@ -149,10 +149,9 @@ def external_sort(temp_files: List[TempFile], n_threads: int) -> TempFile:
         chunks = array_split(temp_files)
         p = Pool(n_threads)
 
-        print_string = f'Iteration {iteration}:\n\t{len(temp_files)} files have been merged into '
+        print(f'Iteration {iteration}:\n\tmerging {len(temp_files)} files...')
         temp_files = p.map(merge_bulks, chunks)
-        print_string += f'{len(temp_files)}'
-        print(print_string)
+        print(f'\tsuccessfully merged into {len(temp_files)} files!')
 
         iteration += 1
 

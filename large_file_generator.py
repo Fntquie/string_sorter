@@ -33,11 +33,11 @@ class LargeFileWithStringsGenerator:
         if os.path.exists(self._path):
             os.remove(self._path)
 
-        print(f'Generating... ({n_threads} used)')
+        print(f'Generating... ({n_threads} threads used)')
 
         # run parallel writing to file
         p = Pool(n_threads)
-        bulk_size = min(BULK_SIZE/10, file_size // n_threads)
+        bulk_size = min(BULK_SIZE // 10, file_size // n_threads)
         p.map(partial(self._write_strings, bulk_size=bulk_size), range(0, file_size, bulk_size))
 
 
